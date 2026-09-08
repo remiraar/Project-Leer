@@ -2,3 +2,11 @@
     outline: red;
     outline-style: dashed;
 }
+.vakken {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 33vw;       /* 33% van de breedte van het scherm */
+  height: 100vh;     /* 100% van de hoogte van het scherm */
+  
+}
