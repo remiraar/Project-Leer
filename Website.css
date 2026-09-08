@@ -1,7 +1,5 @@
 * {
-  outline: red;
-  outline-style: dashed;
-  outline-width: 2px;
+  outline: red dashed 2px;
 }
 body {
   display: flex;
@@ -16,6 +14,31 @@ body {
   display: flex;
   height: 10%;
   width: 100%;
+  justify-content: space-between;
+  border-bottom: 1.5px solid;
+  border-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%) 1;
+}
+.LogoHoofding {
+  display: flex;
+  height: 100%;
+  width: 30%;
+}
+.ProfielFotoFrame {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  aspect-ratio: 1/1;
+}
+.ProfielFoto {
+  display: flex;
+  height: 90%;
+  width: 90%;
+  border-radius: 50%;
+  image-rendering: pixelated;
+  object-fit: cover;
+  object-position: center;
+  border: 1.5px solid black;
 }
 
 
