@@ -1,12 +1,48 @@
-.a {
-    outline: red;
-    outline-style: dashed;
+* {
+  outline: red;
+  outline-style: dashed;
+  outline-width: 2px;
 }
-.vakken {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 33vw;       /* 33% van de breedte van het scherm */
-  height: 100vh;     /* 100% van de hoogte van het scherm */
-  
+body {
+  display: flex;
+  justify-self: center;
+  align-self: center;
+  flex-direction: column;
+  width: 97vw;
+  height: 96vh;
+}
+
+.Hoofding {
+  display: flex;
+  height: 10%;
+  width: 100%;
+}
+
+
+.NietHoofding {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 90%;
+}
+.Vakken {
+  display: flex;
+  width: 30%;
+  height: 100%;
+}
+.NietVakken {
+  display: flex;
+  flex-direction: column;
+  width: 70%;
+  height: 100%;
+}
+.Oefeningen {
+  display: flex;
+  width: 100%;
+  height: 50%;
+}
+.Voortgang {
+  display: flex;
+  width: 100%;
+  height: 50%;
 }
