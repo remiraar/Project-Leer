@@ -26,14 +26,14 @@ body {
 .ProfielFotoFrame {
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: top;
   height: 100%;
   aspect-ratio: 1/1;
 }
 .ProfielFoto {
   display: flex;
   height: 90%;
-  width: 90%;
+  aspect-ratio: 1/1;
   border-radius: 50%;
   image-rendering: pixelated;
   object-fit: cover;
