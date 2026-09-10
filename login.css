@@ -1,0 +1,36 @@
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(10, 16, 125);
+}
+
+.midden {
+    width: 40%;
+    height: 90%;
+    background-color: white;
+    border-radius: 15px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+.knop1_midden {
+    cursor: pointer;
+    width: 30%;
+    height: 10%;
+    background-color: rgb(10, 16, 125);
+    border-radius: 15px;
+    margin-right: 50%;
+    display: flex;
+    border-width: 2px;
+    border-style: solid;
+    border-color: black;
+    transition: 0.3s;
+} 
+
+.knop1_midden:hover {
+    background-color: rgb(18, 27, 199);
+}
