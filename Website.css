@@ -48,10 +48,19 @@ body {
   width: 100%;
   height: 90%;
 }
-.Vakken {
+.VakkenFrame {
   display: flex;
   width: 30%;
   height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+.Vakken {
+  background-color: rgb(231, 231, 231);
+  height: 95%;
+  width: 95%;
+  display: flex;
+  border-radius: 15px;
 }
 .NietVakken {
   display: flex;
@@ -59,12 +68,12 @@ body {
   width: 70%;
   height: 100%;
 }
-.Oefeningen {
+.OefeningenFrame {
   display: flex;
   width: 100%;
   height: 50%;
 }
-.Voortgang {
+.VoortgangFrame {
   display: flex;
   width: 100%;
   height: 50%;
