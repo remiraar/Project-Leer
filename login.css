@@ -7,24 +7,23 @@ body {
     background-color: rgb(10, 16, 125);
 }
 
-.midden {
+.MiddenBlok {
+    display: flex;
     width: 40%;
     height: 90%;
     background-color: white;
     border-radius: 15px;
     align-items: center;
     justify-content: center;
-    display: flex;
 }
 
-.knop1_midden {
+.LoginKnop {
+    display: flex;
     cursor: pointer;
     width: 30%;
     height: 10%;
     background-color: rgb(12, 19, 150);
     border-radius: 15px;
-    margin-right: 50%;
-    display: flex;
     justify-content: center;
     border-width: 2px;
     border-style: solid;
