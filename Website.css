@@ -68,13 +68,31 @@ body {
   width: 70%;
   height: 100%;
 }
+.Oefeningen {
+  background-color: rgb(193, 66, 66);
+  height: 100%;
+  width: 100%;
+  display: flex;
+  border-radius: 15px;
+}
 .OefeningenFrame {
   display: flex;
   width: 100%;
   height: 50%;
+  align-items: center;
+  justify-content: center;
 }
 .VoortgangFrame {
   display: flex;
   width: 100%;
   height: 50%;
+  align-items: center;
+  justify-content: center;
+}
+.Voortgang {
+  background-color: rgb(231, 231, 231);
+  height: 94%;
+  width: 98%;
+  display: flex;
+  border-radius: 15px;
 }
