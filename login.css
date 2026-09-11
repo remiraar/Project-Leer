@@ -21,10 +21,11 @@ body {
     cursor: pointer;
     width: 30%;
     height: 10%;
-    background-color: rgb(10, 16, 125);
+    background-color: rgb(12, 19, 150);
     border-radius: 15px;
     margin-right: 50%;
     display: flex;
+    justify-content: center;
     border-width: 2px;
     border-style: solid;
     border-color: black;
