@@ -25,7 +25,13 @@ body {
 .LogoHoofding {
   display: flex;
   height: 100%;
-  width: 30%;
+  width: auto;
+  justify-content: right;
+}
+.Logo {
+  display: flex;
+  height: 100%;
+  width: 90%;
 }
 .ProfielFotoFrame {
   display: flex;
