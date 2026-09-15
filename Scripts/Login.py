@@ -16,16 +16,59 @@ def Login(Naam, Wachtwoord):
     else:
         return False
 #brol die we nooit gaan gebruiken gebruik OS voor niks
+import csv
+
+def controle_leeg(invoer_str):
+    unieke_gegevens = ["Leerlingnummer: ", "Gebruikersnaam: "]
+    is_ok = False
+    is_uniek = False
+
+    while not is_ok:
+        invoer = input(invoer_str)
+        if len(invoer) > 0:
+            juiste_invoer = invoer
+            is_ok = True
+        else:
+            print("De invoer mag niet leeg zijn.")
+
+    if invoer_str in unieke_gegevens:
+        # bepaal op welke kolom (index) we moeten controleren
+        if invoer_str == "Leerlingnummer: ":
+            KolomWaarde = "Leerlingnummer"
+        else:
+            KolomWaarde = "Gebruikersnaam"
+
+        while not is_uniek:
+            bestaat_al = False
+            with open("Scripts/Databas.csv", "r", newline="") as bestand:
+                lezer = csv.DictReader(bestand)
+                for rij in lezer:
+                    if rij[KolomWaarde] == juiste_invoer:
+                        bestaat_al = True
+
+            if bestaat_al:
+                print(f"Deze waarde bestaat al: {juiste_invoer}")
+                invoer = input(invoer_str)
+                if len(invoer) > 0:
+                    juiste_invoer = invoer
+                else:
+                    print("De invoer mag niet leeg zijn.")
+            else:
+                is_uniek = True
+
+        return juiste_invoer
+    else:
+        return juiste_invoer
 
 if x == 1:
-    Leerlingnummer = input("Leerlingnummer: ")
-    Voornaam = input("Voornaam: ")
-    Achternaam = input("Achternaam: ")
-    Klas = input("Klas: ")
-    Email = input("Email: ")
-    Gebruikersnaam = input("Gebruikersnaam: ")
-    Wachtwoord = input("Wachtwoord: ")
-    Vak = input("Vak: ")
+    Leerlingnummer = controle_leeg("Leerlingnumer: ")
+    Voornaam = controle_leeg("Voornaam: ")
+    Achternaam = controle_leeg("Acheternaam: ")
+    Klas = controle_leeg("klas: ")
+    Email = controle_leeg("Email: ")
+    Gebruikersnaam = controle_leeg("Gebruikersnaam: ")
+    Wachtwoord = controle_leeg("Wachtwoord: ")
+    Vak = controle_leeg("Vak: ")
     with open("Scripts/Databas.csv", "a") as file:
         file.write(f"{Leerlingnummer},{Voornaam},{Achternaam},{Klas},{Email},{Gebruikersnaam},{Wachtwoord},{Vak}")
 
