@@ -73,5 +73,18 @@ if x == 1:
         file.write(f"{Leerlingnummer},{Voornaam},{Achternaam},{Klas},{Email},{Gebruikersnaam},{Wachtwoord},{Vak}")
 
 elif x == 2:
+    Voornaam = input("Voornaam: ")
+    Achternaam = input("Achternaam: ")
+    Wachtwoord = input("Wachtwoord: ")
+
     with open("Scripts/Databas.csv", "r") as file:
-        file.readlines()
+        lezer = csv.DictReader(file)
+
+        for i in lezer:
+            bestaat = False
+            if i["Voornaam"] == Voornaam and i["Achternaam"] == Achternaam and i["Wachtwoord"] == Wachtwoord:
+                print(f"U bent ingelogd, meester {i['Gebruikersnaam']}")
+                print(i)
+                bestaat = True
+        if not bestaat:
+            print("U bestaat niet in onze database.")
