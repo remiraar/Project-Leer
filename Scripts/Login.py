@@ -15,7 +15,8 @@ def Login(Naam, Wachtwoord):
         return True
     else:
         return False
-#brol die we nooit gaan gebruiken gebruik OS voor niks
+#Oefening
+
 import csv
 
 def controle_leeg(invoer_str):
@@ -32,7 +33,6 @@ def controle_leeg(invoer_str):
             print("De invoer mag niet leeg zijn.")
 
     if invoer_str in unieke_gegevens:
-        # bepaal op welke kolom (index) we moeten controleren
         if invoer_str == "Leerlingnummer: ":
             KolomWaarde = "Leerlingnummer"
         else:
@@ -61,18 +61,18 @@ def controle_leeg(invoer_str):
         return juiste_invoer
 
 if x == 1:
-    Leerlingnummer = controle_leeg("Leerlingnumer: ")
+    Leerlingnummer = controle_leeg("Leerlingnummer: ")
     Voornaam = controle_leeg("Voornaam: ")
-    Achternaam = controle_leeg("Acheternaam: ")
-    Klas = controle_leeg("klas: ")
+    Achternaam = controle_leeg("Achternaam: ")
+    Klas = controle_leeg("Klas: ")
     Email = controle_leeg("Email: ")
     Gebruikersnaam = controle_leeg("Gebruikersnaam: ")
     Wachtwoord = controle_leeg("Wachtwoord: ")
     Vak = controle_leeg("Vak: ")
     with open("Scripts/Databas.csv", "a") as file:
-        file.write(f"{Leerlingnummer},{Voornaam},{Achternaam},{Klas},{Email},{Gebruikersnaam},{Wachtwoord},{Vak}")
+        file.write(f"\n{Leerlingnummer},{Voornaam},{Achternaam},{Klas},{Email},{Gebruikersnaam},{Wachtwoord},{Vak}")
 
-elif x == 2:
+    print("\nKijk als er iemand inzit:\n\n")
     Voornaam = input("Voornaam: ")
     Achternaam = input("Achternaam: ")
     Wachtwoord = input("Wachtwoord: ")
