@@ -3,7 +3,31 @@ x = 1
 #Oefening
 
 import csv
+import string
+def controle_wachtwoord(invoer_str):
+     
+    is_geldig = False
+    while not is_geldig:
+        invoer = input(invoer_str)
+        if len(invoer) > 12:
+            if invoer.lower() != invoer:
+                if invoer.upper() != invoer:
+                    if any(c.isdigit() for c in invoer):
+                        if any(c in string.punctuation for c in invoer):
+                            wachtwoord = invoer
+                            is_geldig = True
+                        else:
+                            print("Het wachtwoord moet minstens één leesteken bevatten.")
+                    else: 
+                        print("Het wachtwoord moet minstens één cijfer bevatten.")
+                else:
+                    print("Het wachtwoord moet minstens één kleine letter bevatten.")
+            else: 
+                print("Het wachtwoord moet minstens één hoofdletter bevatten.")
+        else: 
+            print("Het wachtwoord moet minstens 12 tekens bevatten.")
 
+    return wachtwoord
 from sympy import true
 
 def controle_leeg(invoer_str):
