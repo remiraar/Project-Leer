@@ -89,7 +89,7 @@ while True:
         Klas = controle_leeg("Klas: ")
         Email = controle_leeg("Email: ")
         Gebruikersnaam = controle_leeg("Gebruikersnaam: ")
-        Wachtwoord = controle_leeg("Wachtwoord: ")
+        Wachtwoord = controle_wachtwoord("Wachtwoord: ")
         Vak = controle_leeg("Vak: ")
         with open("Scripts/Databas.csv", "a") as file:
             file.write(f"\n{Leerlingnummer},{Voornaam},{Achternaam},{Klas},{Email},{Gebruikersnaam},{Wachtwoord},{Vak}")
