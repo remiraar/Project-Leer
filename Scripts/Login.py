@@ -28,7 +28,7 @@ def controle_wachtwoord(invoer_str):
             print("Het wachtwoord moet minstens 12 tekens bevatten.")
 
     return wachtwoord
-from sympy import true
+
 
 def controle_leeg(invoer_str):
     unieke_gegevens = ["Leerlingnummer: ", "Gebruikersnaam: "]
