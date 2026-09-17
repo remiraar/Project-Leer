@@ -9,7 +9,7 @@ def controle_wachtwoord(invoer_str):
     is_geldig = False
     while not is_geldig:
         invoer = input(invoer_str)
-        if len(invoer) > 12:
+        if len(invoer) >= 8:
             if invoer.lower() != invoer:
                 if invoer.upper() != invoer:
                     if any(c.isdigit() for c in invoer):
@@ -25,7 +25,7 @@ def controle_wachtwoord(invoer_str):
             else: 
                 print("Het wachtwoord moet minstens één hoofdletter bevatten.")
         else: 
-            print("Het wachtwoord moet minstens 12 tekens bevatten.")
+            print("Het wachtwoord moet minstens 8 tekens bevatten.")
 
     return wachtwoord
 
