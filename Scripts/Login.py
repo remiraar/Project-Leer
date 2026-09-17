@@ -4,6 +4,8 @@ x = 1
 
 import csv
 
+from sympy import true
+
 def controle_leeg(invoer_str):
     unieke_gegevens = ["Leerlingnummer: ", "Gebruikersnaam: "]
     is_ok = False
@@ -45,31 +47,45 @@ def controle_leeg(invoer_str):
     else:
         return juiste_invoer
 
-if x == 1:
-    Leerlingnummer = controle_leeg("Leerlingnummer: ")
-    Voornaam = controle_leeg("Voornaam: ")
-    Achternaam = controle_leeg("Achternaam: ")
-    Klas = controle_leeg("Klas: ")
-    Email = controle_leeg("Email: ")
-    Gebruikersnaam = controle_leeg("Gebruikersnaam: ")
-    Wachtwoord = controle_leeg("Wachtwoord: ")
-    Vak = controle_leeg("Vak: ")
-    with open("Scripts/Databas.csv", "a") as file:
-        file.write(f"\n{Leerlingnummer},{Voornaam},{Achternaam},{Klas},{Email},{Gebruikersnaam},{Wachtwoord},{Vak}")
+def KeuzeMenu(tekst):
+    while True:
+        keuze = input(tekst)
+        if keuze in ["1", "2", "3"]:
+            return keuze
+        else:
+            print("Ongeldige keuze. Kies 1, 2 of 3.")
 
-    print("\nKijk als er iemand inzit:\n\n")
-    Voornaam = input("Voornaam: ")
-    Achternaam = input("Achternaam: ")
-    Wachtwoord = input("Wachtwoord: ")
+while True:
+    x = KeuzeMenu("Wil je:\n1. Registreren\n2. Inloggen\n3. Afsluiten\n")
 
-    with open("Scripts/Databas.csv", "r") as file:
-        lezer = csv.DictReader(file)
+    if x == "1":
+        Leerlingnummer = controle_leeg("Leerlingnummer: ")
+        Voornaam = controle_leeg("Voornaam: ")
+        Achternaam = controle_leeg("Achternaam: ")
+        Klas = controle_leeg("Klas: ")
+        Email = controle_leeg("Email: ")
+        Gebruikersnaam = controle_leeg("Gebruikersnaam: ")
+        Wachtwoord = controle_leeg("Wachtwoord: ")
+        Vak = controle_leeg("Vak: ")
+        with open("Scripts/Databas.csv", "a") as file:
+            file.write(f"\n{Leerlingnummer},{Voornaam},{Achternaam},{Klas},{Email},{Gebruikersnaam},{Wachtwoord},{Vak}")
 
-        for i in lezer:
-            bestaat = False
-            if i["Voornaam"] == Voornaam and i["Achternaam"] == Achternaam and i["Wachtwoord"] == Wachtwoord:
-                print(f"U bent ingelogd, meester {i['Gebruikersnaam']}")
-                print(i)
-                bestaat = True
-        if not bestaat:
-            print("U bestaat niet in onze database.")
+    if x == "2":
+        print("\nKijk als er iemand inzit:\n\n")
+        Voornaam = input("Voornaam: ")
+        Achternaam = input("Achternaam: ")
+        Wachtwoord = input("Wachtwoord: ")
+
+        with open("Scripts/Databas.csv", "r") as file:
+            lezer = csv.DictReader(file)
+
+            for i in lezer:
+                bestaat = False
+                if i["Voornaam"] == Voornaam and i["Achternaam"] == Achternaam and i["Wachtwoord"] == Wachtwoord:
+                    print(f"U bent ingelogd, meester {i['Gebruikersnaam']}")
+                    print(i)
+                    bestaat = True
+            if not bestaat:
+                print("U bestaat niet in onze database.")
+    if x == "3":
+        print(20*"\n")
