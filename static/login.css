@@ -1,6 +1,3 @@
-* {
-    outline: red dashed 2px;
- }
 body {
     margin: 0;
     height: 100vh;
@@ -15,34 +12,54 @@ body {
     height: 90%;
     border-radius: 15px;
     background-color: white;
-    justify-content: center;
+    align-items: center;       
     flex-direction: column;
+    padding-top: 40px;
+    padding-bottom: 20px;
+    box-sizing: border-box;
 }
-.blok1 {
+form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    gap: 20px;
+    margin-top: 40px;
+}
+.blok1, .blok2 {
     display: flex;
     width: 100%;
-    height: 33%;
+    height: auto;              
     justify-content: center;
 }
-.blok2 {
-    display: flex;
-    width: 100%;
-    height: 34%;
-    justify-content: center;
+input {
+    width: 60%;
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
 }
-
+.Logo {
+    max-width: 320px;          
+    height: auto;
+}
 .LoginKnop {
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    margin-top: 15%;
-    width: 30%;
-    height: 30%;
+    margin-top: 10px;          
+    width: 40%;                
+    height: 40px;              
     background-color: rgb(16, 25, 199);
+    color: white;              
     border-radius: 15px;
     border-width: 2px;
     border-style: solid;
     border-color: black;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;  
-} 
+}
+.Registreer {
+    margin-top: auto;
+    margin-bottom: 20px;
+}
