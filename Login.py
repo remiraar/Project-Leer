@@ -1,11 +1,12 @@
 import csv
 import string
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify, session
 
 app = Flask(__name__)
+app.secret_key = "OhioSigma"
 
 # ==========================================
-# 1. DE CONTROLERENDE FUNCTIES UIT JOUW CODE
+# 1. CONTROLERENDE FUNCTIES UIT ONZE CODE
 # ==========================================
 
 def controle_wachtwoord_flask(invoer):  
@@ -43,39 +44,133 @@ def controleer_uniek(waarde, kolom_naam):
 
 @app.route('/')
 def home():
-    """Toont de inlogpagina."""
     return render_template('login.html')
 
-@app.route('/login', methods=['POST'])
+@app.route("/Website")
+def Website():
+    return render_template("Website.html")
+
+@app.route("/MaakAccount", methods=["POST"])
+def MaakAccount():
+    Wachtwoord = request.form.get("Wachtwoord")
+    Wachtwoord_OK, message = controle_wachtwoord_flask(Wachtwoord)
+    if not Wachtwoord_OK:
+        return jsonify(
+            Success=False,
+            Message=message
+        )
+    else:
+        Gebruikersnaam = request.form.get("Gebruikersnaam")
+
+        Geg = session["registratie"]
+
+        Voornaam = Geg["Voornaam"]
+        Achternaam = Geg["Achternaam"]
+        Email = Geg["Email"]
+        Klas = Geg["Klas"]
+        Leerlingnummer = Geg["Leerlingnummer"]
+        Vak = Geg["Vak"]
+
+        if controleer_uniek(Gebruikersnaam, "Gebruikersnaam"):
+            with open("Databas.csv", "a", newline="", encoding="utf-8") as Bestand:
+                Writer = csv.writer(Bestand)
+
+                Writer.writerow([
+                    Leerlingnummer,
+                    Voornaam,
+                    Achternaam,
+                    Klas,
+                    Email,
+                    Gebruikersnaam,
+                    Wachtwoord,
+                    Vak
+                ])
+            session.pop("registratie", None)
+            return jsonify(Success=True)
+        
+        return jsonify(
+            Success=False,
+            Message="Gebruikersnaam is al gekozen."
+        )
+
+
+
+
+@app.route('/registreer', methods=["POST","GET"])
+def registreer():
+    if request.method == "POST":
+        Voornaam = request.form.get("Voornaam").strip()
+        Achternaam = request.form.get("Achternaam").strip()
+        Email = request.form.get("Email").strip()
+        Klas = request.form.get("Klas").strip()
+        Leerlingnummer = request.form.get("Leerlingnummer").strip()
+        Vak = request.form.get("Vak").strip()
+
+        if not controleer_uniek(Leerlingnummer, "Leerlingnummer"):
+            print("FOUT: Leerlingnummer zit al in systeem.")
+            return jsonify(
+                Success=False,
+                Message="Dit leerlingnummer is al in gebruik, log in."
+            ), 500
+
+        session["registratie"] = {
+            "Voornaam": Voornaam,
+            "Achternaam": Achternaam,
+            "Email": Email,
+            "Klas": Klas,
+            "Leerlingnummer": Leerlingnummer,
+            "Vak": Vak 
+        }
+
+        return jsonify(Success=True)
+    return render_template("registreren.html")
+    
+
+@app.route('/login', methods=["POST", "GET"])
 def login():
-    Gebruikersnaam = request.form.get('username', '').strip()   
-    Wachtwoord = request.form.get('password', '').strip()
+    if request.method == "POST":
+        Gebruikersnaam = request.form.get("username").strip()   
+        Wachtwoord = request.form.get("password").strip()
 
-    print(f"\n--- INLOGPOGING ---")
-    print(f"Ingevuld: Gebruikersnaam='{Gebruikersnaam}', Wachtwoord='{Wachtwoord}'")
+        print(f"\n--- INLOGPOGING ---")
+        print(f"Ingevuld: Gebruikersnaam='{Gebruikersnaam}', Wachtwoord='{Wachtwoord}'")
 
-    try:
-        with open("Databas.csv", "r", newline="", encoding="utf-8") as file:  
-            lezer = csv.DictReader(file)
-            
-            # Controleer of de CSV headers wel gelezen kunnen worden
-            if not lezer.fieldnames:
-                print("FOUT: De CSV-database heeft geen kolommen of is leeg!")
-                return "<h1>Databasefout</h1>", 500
-
-            for i in lezer:
-                db_gebruikersnaam = (i.get("Gebruikersnaam") or "").strip()
-                db_wachtwoord = (i.get("Wachtwoord") or "").strip()
-
-                if db_gebruikersnaam == Gebruikersnaam and db_wachtwoord == Wachtwoord:
-                    print(f"MATCH GEVONDEN! Welkom {Gebruikersnaam}")
-                    return render_template('Website.html', gebruikersnaam=Gebruikersnaam)
-    except Exception as e:
-        print(f"Er ging iets mis bij het openen van het bestand: {e}")
-        return f"<h1>Interne Serverfout: {e}</h1>", 500
+        try:
+            with open("Databas.csv", "r", newline="", encoding="utf-8") as file:  
+                lezer = csv.DictReader(file)
                 
-    print("GEEN MATCH GEVONDEN IN DATABASE.")
-    return "<h1>U bestaat niet in onze database of het wachtwoord is onjuist.</h1>", 401
+                # Controleer of de CSV headers wel gelezen kunnen worden
+                if not lezer.fieldnames:
+                    print("FOUT: De CSV-database heeft geen kolommen of is leeg!")
+                    return jsonify(
+                        Success=False,
+                        Message="Er is een probleem opgetreden."
+                    ), 500
+
+                for i in lezer:
+                    db_gebruikersnaam = (i.get("Gebruikersnaam") or "").strip()
+                    db_wachtwoord = (i.get("Wachtwoord") or "").strip()
+
+                    if db_gebruikersnaam == Gebruikersnaam and db_wachtwoord == Wachtwoord:
+                        print(f"MATCH GEVONDEN! Welkom {Gebruikersnaam}")
+                        return jsonify(
+                            Success=True,
+                            Redirect="/Website",
+                            CurrentUser=Gebruikersnaam
+                        )
+        except Exception as e:
+            print(f"Er ging iets mis bij het openen van het bestand: {e}")
+            return jsonify(
+                Success=False,
+                Message=f"Interne databasefout: {e}"
+            ), 500
+                    
+        print("GEEN MATCH GEVONDEN IN DATABASE.")
+        return jsonify(
+            Success=False,
+            Message="Gebruikersnaam of wachtwoord is fout."
+        ), 401
+    return render_template("login.html")
 
 
 

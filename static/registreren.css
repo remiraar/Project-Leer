@@ -1,3 +1,4 @@
+
 p {
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
@@ -25,13 +26,12 @@ body {
     justify-content: center;
     align-items: flex-end;
 }
-
-form {
+.RegistratieForm {
     display: flex;
     flex-direction: column;
     justify-content: center;
     width: 100%;
-    height: 55%;
+    height: 67%;
     align-items: center;
 }
 .Foutmelding {
@@ -39,7 +39,7 @@ form {
     justify-content: center;
     align-items: center;
     width: 100%;
-    height: 15%;
+    height: 8%;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     color: rgb(220, 0, 0);
 }
@@ -47,23 +47,23 @@ form {
 .InputBlok {
     display: flex;
     width: 100%;
-    height: 25%;              
+    height: 13%;              
     justify-content: center;
     align-items: flex-end;
 }
 .Input {
     display: flex;
     width: 60%;
-    height: 35%;
+    height: 25%;
     background-color: white;
 }
 
 .SubmitBlok {
     display: flex;
     width: 100%;
-    height: 15%;
+    height: 14%;
     justify-content: center;
-    align-items: flex-end;
+    align-items: flex-start;
 }
 .LoginKnop {
     display: flex;
@@ -79,7 +79,7 @@ form {
     border-style: solid;
     border-color: black;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    font-size: larger;  
+    font-size: larger;
 }
 input {
     width: 60%;
@@ -97,6 +97,15 @@ input {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 20%;
+    height: 8%;
     width: 100%;
+}
+
+.InputDiv2 {
+    display: flex;
+    width: 100%;
+    height: 50%;              
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: column;
 }
