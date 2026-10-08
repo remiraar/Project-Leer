@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="/static/registreren.css">
+    <script src="/static/registreer.js" defer></script>
+</head>
+
+<body>
+    <div class="MiddenBlok">
+        <div class="LogoDiv">
+            <img src="/static/Logo.png" alt="Logo" class="Logo">
+        </div>
+        <form id="RegistratieForm" class="RegistratieForm">
+            <div class="InputBlok">
+                <input class="Input" type="text" name="Voornaam" placeholder="Voornaam" required>
+            </div>
+            <div class="InputBlok">
+                <input class="Input" type="text" name="Achternaam" placeholder="Achternaam" required>
+            </div>
+            <div class="InputBlok">
+                <input class="Input" type="email" name="Email" placeholder="Email" required>
+            </div>
+            <div class="InputBlok">
+                <input class="Input" type="text" name="Klas" placeholder="Klas" required>
+            </div>
+            <div class="InputBlok">
+                <input class="Input" id="Leerlingnummer" type="text" name="Leerlingnummer" placeholder="Leerlingnummer" required>
+            </div>
+            <div class="InputBlok">
+                <input class="Input" type="text" name="Vak" placeholder="Vak" required>
+            </div>
+            <div class="Foutmelding" id="Foutmelding"></div>
+            <div class="SubmitBlok" id="SubmitBlok">
+                <button type="submit" class="LoginKnop" id="SubmitKnop">Ga door</button>
+            </div>
+
+        </form>
+
+        <div class="RegistreerDiv">
+            <p>Heb je al een account? <a href="{{ url_for('loginLeerling') }}">Log in.</a></p>
+        </div>
+
+    </div>
+</body>
+</html>

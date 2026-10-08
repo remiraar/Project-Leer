@@ -44,11 +44,11 @@ def controleer_uniek(waarde, kolom_naam):
 
 @app.route('/')
 def home():
-    return render_template('login.html')
+    return render_template('Start.html')
 
 @app.route("/Website")
 def Website():
-    return render_template("Website.html")
+    return render_template("WebsiteLeerling.html")
 
 @app.route("/MaakAccount", methods=["POST"])
 def MaakAccount():
@@ -96,8 +96,8 @@ def MaakAccount():
 
 
 
-@app.route('/registreer', methods=["POST","GET"])
-def registreer():
+@app.route('/registrerenLeerling', methods=["POST","GET"])
+def registrerenLeerling():
     if request.method == "POST":
         Voornaam = request.form.get("Voornaam").strip()
         Achternaam = request.form.get("Achternaam").strip()
@@ -123,11 +123,11 @@ def registreer():
         }
 
         return jsonify(Success=True)
-    return render_template("registreren.html")
+    return render_template("registrerenLeerling.html")
     
 
-@app.route('/login', methods=["POST", "GET"])
-def login():
+@app.route('/loginLeerling', methods=["POST", "GET"])
+def loginLeerling():
     if request.method == "POST":
         Gebruikersnaam = request.form.get("username").strip()   
         Wachtwoord = request.form.get("password").strip()
@@ -170,8 +170,19 @@ def login():
             Success=False,
             Message="Gebruikersnaam of wachtwoord is fout."
         ), 401
-    return render_template("login.html")
+    return render_template("loginLeerling.html")
 
+@app.route("/loginLeerkracht", methods=["POST", "GET"])
+def loginLeerkracht():
+    if request.method == "POST":
+        print("post")
+    return render_template("loginLeerkracht.html")
+
+@app.route("/registrerenLeerkracht", methods=["POST", "GET"])
+def registrerenLeerkracht():
+    if request.method == "POST":
+        print("POST")
+    return render_template("registrerenLeerkracht.html")
 
 
 # ==========================================
