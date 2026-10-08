@@ -8,7 +8,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgb(10, 16, 125);
+    background-color: rgb(25, 162, 155);
 }
 .MiddenBlok {
     display: flex;
@@ -74,7 +74,7 @@ body {
     height: 90%;            
     background-color: rgb(16, 25, 199);
     color: white;              
-    border-radius: 15px;
+    border-radius: 12px;
     border: none;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-size: larger;

@@ -9,7 +9,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgb(10, 16, 125);
+    background-color: rgb(25, 162, 155);
 }
 .MiddenBlok {
     display: flex;
@@ -43,7 +43,7 @@ body {
     display: flex;
     width: 40%;
     aspect-ratio: 1/1;
-    border: 2px solid black;
+    border: 1px solid rgb(160, 159, 159);
     border-radius: 15px;
     position: relative;
     justify-content: center;
@@ -52,7 +52,9 @@ body {
     padding: 0%;
     margin: 0%;
     align-items: flex-start;
+    
 }
+
 .KeuzeFoto {
     display: flex;
     width: 100%;
@@ -70,9 +72,14 @@ body {
     align-items: center;
     font-family:'Franklin Gothic medium', 'Arial Narrow', Arial, sans-serif;
     font-size: 150%;
-    border-radius: 50%;
-    border-bottom-left-radius: 0%;
-    border-bottom-right-radius: 0%;
     background-color: white;
-    border-top: 2px solid black;
+    color: black;
+    transition: background-color 0.2s, color 0.2s;
+
+}
+
+.InfoTekst:hover {
+    background-color: rgb(25, 162, 155);
+    color: white;
+    
 }
