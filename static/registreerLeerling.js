@@ -12,14 +12,13 @@ RegistratieForm.addEventListener("submit", async function (event) {
     if (stap===1) {
         const Gegevens = new FormData(RegistratieForm);
 
-        const Antw = await fetch("/registreer", {
+        const Antw = await fetch("/registrerenLeerling", {
             method: "POST",
             body: Gegevens
         });
 
         const Resultaat = await Antw.json();
         if (Resultaat.Success) {
-            Info = Resultaat.Info
             document.querySelectorAll(".InputBlok").forEach(Element => Element.remove());
 
             const WachtwoordDiv = document.createElement("div");
@@ -64,7 +63,7 @@ RegistratieForm.addEventListener("submit", async function (event) {
         const Resultaat = await Antw.json();
 
         if (Resultaat.Success) {
-            window.location.href = "/Website";
+            window.location.href = "/WebsiteLeerling";
         } else {
             Foutmelding.textContent = Resultaat.Message;
         }
