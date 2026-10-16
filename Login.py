@@ -1,6 +1,6 @@
 import csv
 import string
-from flask import Flask, render_template, request, jsonify, session
+from flask import Flask, render_template, request, jsonify, session, redirect
 
 app = Flask(__name__)
 app.secret_key = "OhioSigma"
@@ -50,10 +50,14 @@ def home():
 
 @app.route("/WebsiteLeerling")
 def Website():
+    if session.get("rol") != "leerling":
+        return redirect("/loginLeerling")
     return render_template("WebsiteLeerling.html")
 
 @app.route("/WebsiteLeerkracht")
 def WebsiteLeerkracht():
+    if session.get("rol") != "leerkracht":
+        return redirect("/loginLeerkracht")
     return render_template("WebsiteLeerkracht.html")
 
 @app.route("/MaakAccount", methods=["POST"])
@@ -158,6 +162,8 @@ def loginLeerling():
                     db_wachtwoord = (i.get("Wachtwoord") or "").strip()
 
                     if db_gebruikersnaam == Gebruikersnaam and db_wachtwoord == Wachtwoord:
+                        session["gebruiker"] = Gebruikersnaam
+                        session["rol"] = "leerling"
                         print(f"MATCH GEVONDEN! Welkom {Gebruikersnaam}")
                         return jsonify(
                             Success=True,
@@ -204,6 +210,8 @@ def loginLeerkracht():
                     db_wachtwoord = (i.get("Wachtwoord") or "").strip()
 
                     if db_gebruikersnaam == Gebruikersnaam and db_wachtwoord == Wachtwoord:
+                        session["gebruiker"] = Gebruikersnaam
+                        session["rol"] = "leerkracht"
                         print(f"MATCH GEVONDEN! Welkom {Gebruikersnaam}")
                         return jsonify(
                             Success=True,
