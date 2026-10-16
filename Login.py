@@ -1,47 +1,18 @@
 import csv
-import string
+from hulpfuncties import (
+    controle_wachtwoord_flask, 
+    controleer_uniek, 
+    controleer_login
+)
 from flask import Flask, render_template, request, jsonify, session, redirect
 
 app = Flask(__name__)
 app.secret_key = "OhioSigma"
 
-# ==========================================
-# 1. CONTROLERENDE FUNCTIES UIT ONZE CODE
-# ==========================================
-
-def controle_wachtwoord_flask(invoer):
-    if not isinstance(invoer, str) or not invoer:
-        return False, "Vul een wachtwoord in."
-
-    if len(invoer) < 8:
-        return False, "Het wachtwoord moet minstens 8 tekens bevatten."
-
-    if invoer.lower() == invoer:
-        return False, "Het wachtwoord moet minstens één hoofdletter bevatten."
-
-    if invoer.upper() == invoer:
-        return False, "Het wachtwoord moet minstens één kleine letter bevatten."
-
-    if not any(c.isdigit() for c in invoer):
-        return False, "Het wachtwoord moet minstens één cijfer bevatten."
-
-    if not any(c in string.punctuation for c in invoer):
-        return False, "Het wachtwoord moet minstens één leesteken bevatten."
-
-    return True, invoer
-
-def controleer_uniek(waarde, kolom_naam, database):
-    """Controleert of een waarde al bestaat in Databas.csv."""
-    with open(database, "r", newline="", encoding="utf-8") as bestand:
-        lezer = csv.DictReader(bestand)
-        for rij in lezer:
-            if rij.get(kolom_naam) == waarde:
-                return False 
-    return True 
 
 
 # ==========================================
-# 2. INLOG-LOGICA (Alleen Gebruikersnaam + Wachtwoord)
+# 1. INLOG-LOGICA (Alleen Gebruikersnaam + Wachtwoord)
 # ==========================================
 
 @app.route('/')
@@ -139,97 +110,24 @@ def registrerenLeerling():
 @app.route('/loginLeerling', methods=["POST", "GET"])
 def loginLeerling():
     if request.method == "POST":
-        Gebruikersnaam = request.form.get("username").strip()   
-        Wachtwoord = request.form.get("password").strip()
+        return controleer_login(
+            "Databas.csv",
+            "leerling",
+            "/WebsiteLeerling"
+        )
 
-        print(f"\n--- INLOGPOGING ---")
-        print(f"Ingevuld: Gebruikersnaam='{Gebruikersnaam}', Wachtwoord='{Wachtwoord}'")
-
-        try:
-            with open("Databas.csv", "r", newline="", encoding="utf-8") as file:  
-                lezer = csv.DictReader(file)
-                
-                # Controleer of de CSV headers wel gelezen kunnen worden
-                if not lezer.fieldnames:
-                    print("FOUT: De CSV-database heeft geen kolommen of is leeg!")
-                    return jsonify(
-                        Success=False,
-                        Message="Er is een probleem opgetreden."
-                    ), 500
-
-                for i in lezer:
-                    db_gebruikersnaam = (i.get("Gebruikersnaam") or "").strip()
-                    db_wachtwoord = (i.get("Wachtwoord") or "").strip()
-
-                    if db_gebruikersnaam == Gebruikersnaam and db_wachtwoord == Wachtwoord:
-                        session["gebruiker"] = Gebruikersnaam
-                        session["rol"] = "leerling"
-                        print(f"MATCH GEVONDEN! Welkom {Gebruikersnaam}")
-                        return jsonify(
-                            Success=True,
-                            Redirect="/WebsiteLeerling",
-                            CurrentUser=Gebruikersnaam
-                        )
-        except Exception as e:
-            print(f"Er ging iets mis bij het openen van het bestand: {e}")
-            return jsonify(
-                Success=False,
-                Message=f"Interne databasefout: {e}"
-            ), 500
-                    
-        print("GEEN MATCH GEVONDEN IN DATABASE.")
-        return jsonify(
-            Success=False,
-            Message="Gebruikersnaam of wachtwoord is fout."
-        ), 401
     return render_template("loginLeerling.html")
+
 
 @app.route("/loginLeerkracht", methods=["POST", "GET"])
 def loginLeerkracht():
     if request.method == "POST":
-        Gebruikersnaam = request.form.get("username").strip()   
-        Wachtwoord = request.form.get("password").strip()
+        return controleer_login(
+            "DatabasLKR.csv",
+            "leerkracht",
+            "/WebsiteLeerkracht"
+        )
 
-        print(f"\n--- INLOGPOGING ---")
-        print(f"Ingevuld: Gebruikersnaam='{Gebruikersnaam}', Wachtwoord='{Wachtwoord}'")
-
-        try:
-            with open("DatabasLKR.csv", "r", newline="", encoding="utf-8") as file:  
-                lezer = csv.DictReader(file)
-                
-                # Controleer of de CSV headers wel gelezen kunnen worden
-                if not lezer.fieldnames:
-                    print("FOUT: De CSV-database heeft geen kolommen of is leeg!")
-                    return jsonify(
-                        Success=False,
-                        Message="Er is een probleem opgetreden."
-                    ), 500
-
-                for i in lezer:
-                    db_gebruikersnaam = (i.get("Gebruikersnaam") or "").strip()
-                    db_wachtwoord = (i.get("Wachtwoord") or "").strip()
-
-                    if db_gebruikersnaam == Gebruikersnaam and db_wachtwoord == Wachtwoord:
-                        session["gebruiker"] = Gebruikersnaam
-                        session["rol"] = "leerkracht"
-                        print(f"MATCH GEVONDEN! Welkom {Gebruikersnaam}")
-                        return jsonify(
-                            Success=True,
-                            Redirect="/WebsiteLeerkracht",
-                            CurrentUser=Gebruikersnaam
-                        )
-        except Exception as e:
-            print(f"Er ging iets mis bij het openen van het bestand: {e}")
-            return jsonify(
-                Success=False,
-                Message=f"Interne databasefout: {e}"
-            ), 500
-                    
-        print("GEEN MATCH GEVONDEN IN DATABASE.")
-        return jsonify(
-            Success=False,
-            Message="Gebruikersnaam of wachtwoord is fout."
-        ), 401
     return render_template("loginLeerkracht.html")
 
 
