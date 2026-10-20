@@ -6,7 +6,7 @@ LoginForm.addEventListener("submit", async function (event) {
     event.preventDefault();
 
     const Gegevens = new FormData(LoginForm);
-    const Antw = await fetch("/login", {
+    const Antw = await fetch("/loginLeerling", {
         method: "POST",
         body: Gegevens
     });
