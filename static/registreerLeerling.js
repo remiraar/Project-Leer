@@ -28,6 +28,7 @@ RegistratieForm.addEventListener("submit", async function (event) {
             Gebruikersnaam.type = "text";
             Gebruikersnaam.placeholder = "Gebruikersnaam";
             Gebruikersnaam.name = "Gebruikersnaam";
+            Gebruikersnaam.required = true; 
 
             WWInput1 = document.createElement("input");
             WWInput1.type = "password";
@@ -63,7 +64,7 @@ RegistratieForm.addEventListener("submit", async function (event) {
         const Resultaat = await Antw.json();
 
         if (Resultaat.Success) {
-            window.location.href = "/WebsiteLeerling";
+            window.location.href = "/loginLeerling";
         } else {
             Foutmelding.textContent = Resultaat.Message;
         }

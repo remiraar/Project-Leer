@@ -6,6 +6,10 @@ from hulpfuncties import (
 )
 from flask import Flask, render_template, request, jsonify, session, redirect
 
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent
+
 app = Flask(__name__)
 app.secret_key = "OhioSigma"
 
@@ -41,19 +45,35 @@ def MaakAccount():
             Message=message
         )
     else:
-        Gebruikersnaam = request.form.get("Gebruikersnaam")
+        Gebruikersnaam = (request.form.get("Gebruikersnaam") or "").strip()
 
-        Geg = session["registratie"]
+        if not Gebruikersnaam:
+            return jsonify(
+                Success=False,
+                Message="Vul een gebruikersnaam in."
+            ), 400  
+        Geg = session.get("registratie")
+
+        if not Geg:
+            return jsonify(
+                Success=False,
+                Message="Je moet eerst je registratiegegevens invullen."
+            ), 400
 
         Voornaam = Geg["Voornaam"]
         Achternaam = Geg["Achternaam"]
         Email = Geg["Email"]
         Klas = Geg["Klas"]
         Leerlingnummer = Geg["Leerlingnummer"]
-        Vak = Geg["Vak"]
 
-        if controleer_uniek(Gebruikersnaam, "Gebruikersnaam", "Databas.csv"):
-            with open("Databas.csv", "a", newline="", encoding="utf-8") as Bestand:
+        if not all([Voornaam, Achternaam, Email, Klas, Leerlingnummer]):
+            return jsonify(
+                Success=False,
+                Message="Vul alle velden in."
+            ), 400
+
+        if controleer_uniek(Gebruikersnaam, "Gebruikersnaam", str(BASE_DIR / "Databas.csv")):
+            with open(str(BASE_DIR / "Databas.csv"), "a", newline="", encoding="utf-8") as Bestand:
                 Writer = csv.writer(Bestand)
 
                 Writer.writerow([
@@ -63,8 +83,7 @@ def MaakAccount():
                     Klas,
                     Email,
                     Gebruikersnaam,
-                    Wachtwoord,
-                    Vak
+                    Wachtwoord
                 ])
             session.pop("registratie", None)
             return jsonify(Success=True)
@@ -85,14 +104,14 @@ def registrerenLeerling():
         Email = request.form.get("Email").strip()
         Klas = request.form.get("Klas").strip()
         Leerlingnummer = request.form.get("Leerlingnummer").strip()
-        Vak = request.form.get("Vak").strip()
 
-        if not controleer_uniek(Leerlingnummer, "Leerlingnummer", "Databas.csv"):
+
+        if not controleer_uniek(Leerlingnummer, "Leerlingnummer", str(BASE_DIR / "Databas.csv")):
             print("FOUT: Leerlingnummer zit al in systeem.")
             return jsonify(
                 Success=False,
                 Message="Dit leerlingnummer is al in gebruik, log in."
-            ), 500
+            ), 400
 
         session["registratie"] = {
             "Voornaam": Voornaam,
@@ -100,7 +119,6 @@ def registrerenLeerling():
             "Email": Email,
             "Klas": Klas,
             "Leerlingnummer": Leerlingnummer,
-            "Vak": Vak 
         }
 
         return jsonify(Success=True)
@@ -111,7 +129,7 @@ def registrerenLeerling():
 def loginLeerling():
     if request.method == "POST":
         return controleer_login(
-            "Databas.csv",
+            str(BASE_DIR / "Databas.csv"),
             "leerling",
             "/WebsiteLeerling"
         )
@@ -123,7 +141,7 @@ def loginLeerling():
 def loginLeerkracht():
     if request.method == "POST":
         return controleer_login(
-            "DatabasLKR.csv",
+            str(BASE_DIR / "DatabasLKR.csv"),
             "leerkracht",
             "/WebsiteLeerkracht"
         )
@@ -138,10 +156,9 @@ def registrerenLeerkracht():
         Voornaam = (request.form.get("Voornaam") or "").strip()
         Achternaam = (request.form.get("Achternaam") or "").strip()
         Email = (request.form.get("Email") or "").strip()
-        Vak = (request.form.get("Vak") or "").strip()
 
         # Controleer of alle gegevens ingevuld zijn.
-        if not all([Voornaam, Achternaam, Email, Vak]):
+        if not all([Voornaam, Achternaam, Email]):
             return jsonify(
                 Success=False,
                 Message="Vul alle velden in."
@@ -152,7 +169,7 @@ def registrerenLeerkracht():
         if not controleer_uniek(
             Email,
             "Email",
-            "DatabasLKR.csv"
+            str(BASE_DIR / "DatabasLKR.csv")
         ):
             return jsonify(
                 Success=False,
@@ -164,7 +181,6 @@ def registrerenLeerkracht():
             "Voornaam": Voornaam,
             "Achternaam": Achternaam,
             "Email": Email,
-            "Vak": Vak
         }
 
         return jsonify(Success=True)
@@ -211,7 +227,7 @@ def MaakAccountLeerkracht():
     if not controleer_uniek(
         Gebruikersnaam,
         "Gebruikersnaam",
-        "DatabasLKR.csv"
+        str(BASE_DIR / "DatabasLKR.csv")
     ):
         return jsonify(
             Success=False,
@@ -220,7 +236,7 @@ def MaakAccountLeerkracht():
 
     # Schrijf de gegevens naar de database van leerkrachten.
     with open(
-        "DatabasLKR.csv",
+        str(BASE_DIR / "DatabasLKR.csv"),
         "a",
         newline="",
         encoding="utf-8"
@@ -233,8 +249,7 @@ def MaakAccountLeerkracht():
             Geg["Achternaam"],
             Geg["Email"],
             Gebruikersnaam,
-            Wachtwoord,
-            Geg["Vak"]
+            Wachtwoord
         ])
 
     # Verwijder de tijdelijke registratiegegevens.

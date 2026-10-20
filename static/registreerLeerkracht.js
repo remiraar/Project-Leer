@@ -63,7 +63,7 @@ RegistratieForm.addEventListener("submit", async function (event) {
         const Resultaat = await Antw.json();
 
         if (Resultaat.Success) {
-            window.location.href = "/Website";
+            window.location.href = "/loginLeerkracht";
         } else {
             Foutmelding.textContent = Resultaat.Message;
         }
