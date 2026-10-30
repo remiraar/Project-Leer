@@ -45,13 +45,8 @@ def MaakAccountLeerling():
             Message=message
         )
     else:
-        Gebruikersnaam = (request.form.get("Gebruikersnaam") or "").strip()
+        VerificatieCode = request.form.get("LeerCode")
 
-        if not Gebruikersnaam:
-            return jsonify(
-                Success=False,
-                Message="Vul een gebruikersnaam in."
-            ), 400  
         Geg = session.get("registratie")
 
         if not Geg:
@@ -63,35 +58,27 @@ def MaakAccountLeerling():
         Voornaam = Geg["Voornaam"]
         Achternaam = Geg["Achternaam"]
         Email = Geg["Email"]
-        Klas = Geg["Klas"]
-        Leerlingnummer = Geg["Leerlingnummer"]
 
-        if not all([Voornaam, Achternaam, Email, Klas, Leerlingnummer]):
+        if not all([Voornaam, Achternaam, Email]):
             return jsonify(
                 Success=False,
                 Message="Vul alle velden in."
             ), 400
 
-        if controleer_uniek(Gebruikersnaam, "Gebruikersnaam", str(BASE_DIR / "Databas.csv")):
-            with open(str(BASE_DIR / "Databas.csv"), "a", newline="", encoding="utf-8") as Bestand:
-                Writer = csv.writer(Bestand)
+        with open(str(BASE_DIR / "Databas.csv"), "a", newline="", encoding="utf-8") as Bestand:
+            Writer = csv.writer(Bestand)
 
-                Writer.writerow([
-                    Leerlingnummer,
-                    Voornaam,
-                    Achternaam,
-                    Klas,
-                    Email,
-                    Gebruikersnaam,
-                    Wachtwoord
-                ])
-            session.pop("registratie", None)
-            return jsonify(Success=True)
-        
-        return jsonify(
-            Success=False,
-            Message="Gebruikersnaam is al gekozen."
-        )
+            Writer.writerow([
+                Leerlingnummer,
+                Voornaam,
+                Achternaam,
+                Klas,
+                Email,
+                Gebruikersnaam,
+                Wachtwoord
+            ])
+        session.pop("registratie", None)
+        return jsonify(Success=True)
 
 
 
@@ -103,7 +90,7 @@ def registrerenLeerling():
         Achternaam = request.form.get("Achternaam").strip()
         Email = request.form.get("Email").strip()
 
-        if Email != f"{Voornaam.lower()}{Achternaam.lower().replace(" ","")}.student@glorieuxsecundair.be":
+        if f"{Voornaam.lower()}{Achternaam.lower()}" in Email and ".student@glorieuxsecundair.be" in Email:
             print("FOUT: naam en email komen niet overeen.")
             return jsonify(
                 Success=False,
