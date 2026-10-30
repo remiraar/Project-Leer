@@ -95,6 +95,7 @@ body {
   position: sticky;
   flex-shrink: 0;
   top: 0;
+  background-color: gray;
 }
 .NietVakken {
   display: flex;

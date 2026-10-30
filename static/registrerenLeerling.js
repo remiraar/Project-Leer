@@ -3,8 +3,8 @@ const Foutmelding = document.getElementById("Foutmelding");
 const SubmitKnop = document.getElementById("SubmitKnop");
 
 let stap = 1;
-let WWInput1;
-let WWInput2;
+let NuWWInput1;
+let NuWWInput2;
 
 RegistratieForm.addEventListener("submit", async function (event) {
     event.preventDefault();
@@ -19,44 +19,38 @@ RegistratieForm.addEventListener("submit", async function (event) {
 
         const Resultaat = await Antw.json();
         if (Resultaat.Success) {
-            document.querySelectorAll(".InputBlok").forEach(Element => Element.remove());
+            const NuWWInput1 = document.getElementById("VoornaamInput");
+            NuWWInput1.name = "Wachtwoord";
+            NuWWInput1.type = "password";
+            NuWWInput1.placeholder = "Wachtwoord";
+            NuWWInput1.value = "";
 
-            const WachtwoordDiv = document.createElement("div");
-            WachtwoordDiv.className = "InputDiv2";
-            
-            const Gebruikersnaam = document.createElement("input");
-            Gebruikersnaam.type = "text";
-            Gebruikersnaam.placeholder = "Gebruikersnaam";
-            Gebruikersnaam.name = "Gebruikersnaam";
-            Gebruikersnaam.required = true; 
+            const NuWWInput2 = document.getElementById("AchternaamInput");
+            NuWWInput2.name = "";
+            NuWWInput2.type = "password";
+            NuWWInput2.placeholder = "Herhaal wachtwoord";
+            NuWWInput2.value = "";
 
-            WWInput1 = document.createElement("input");
-            WWInput1.type = "password";
-            WWInput1.placeholder = "Wachtwoord";
-            WWInput1.name = "Wachtwoord";
+            const NuLeerCode = document.getElementById("EmailInput");
+            NuLeerCode.name = "LeerCode";
+            NuLeerCode.type = "text";
+            NuLeerCode.placeholder = "Unieke verificatiecode";
+            NuLeerCode.value = ""
 
-            WWInput2 = document.createElement("input");
-            WWInput2.type = "password";
-            WWInput2.placeholder = "Herhaal wachtwoord";
-
-            SubmitKnop.textContent = "Registreer";
-            WachtwoordDiv.append(Gebruikersnaam, WWInput1, WWInput2);
-            RegistratieForm.prepend(WachtwoordDiv);
-            
             stap = 2;
         } else {
             Foutmelding.textContent = Resultaat.Message;
         }
     
     } else if (stap===2) {
-        if (WWInput1.value !== WWInput2.value) {
+        if (NuWWInput1.value !== NuWWInput2.value) {
             Foutmelding.textContent = "De wachtwoorden zijn niet hetzelfde.";
             return;
         }
 
         const Geg = new FormData(RegistratieForm);
 
-        const Antw = await fetch("/MaakAccount", {
+        const Antw = await fetch("/MaakAccountLeerling", {
             method: "POST",
             body: Geg
         });

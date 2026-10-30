@@ -35,8 +35,8 @@ def WebsiteLeerkracht():
         return redirect("/loginLeerkracht")
     return render_template("WebsiteLeerkracht.html")
 
-@app.route("/MaakAccount", methods=["POST"])
-def MaakAccount():
+@app.route("/MaakAccountLeerling", methods=["POST"])
+def MaakAccountLeerling():
     Wachtwoord = request.form.get("Wachtwoord")
     Wachtwoord_OK, message = controle_wachtwoord_flask(Wachtwoord)
     if not Wachtwoord_OK:
@@ -102,23 +102,18 @@ def registrerenLeerling():
         Voornaam = request.form.get("Voornaam").strip()
         Achternaam = request.form.get("Achternaam").strip()
         Email = request.form.get("Email").strip()
-        Klas = request.form.get("Klas").strip()
-        Leerlingnummer = request.form.get("Leerlingnummer").strip()
 
-
-        if not controleer_uniek(Leerlingnummer, "Leerlingnummer", str(BASE_DIR / "Databas.csv")):
-            print("FOUT: Leerlingnummer zit al in systeem.")
+        if Email != f"{Voornaam.lower()}{Achternaam.lower().replace(" ","")}.student@glorieuxsecundair.be":
+            print("FOUT: naam en email komen niet overeen.")
             return jsonify(
                 Success=False,
-                Message="Dit leerlingnummer is al in gebruik, log in."
+                Message="Email komt niet overeen met naam."
             ), 400
 
         session["registratie"] = {
             "Voornaam": Voornaam,
             "Achternaam": Achternaam,
-            "Email": Email,
-            "Klas": Klas,
-            "Leerlingnummer": Leerlingnummer,
+            "Email": Email
         }
 
         return jsonify(Success=True)

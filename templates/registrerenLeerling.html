@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
-    <link rel="stylesheet" href="/static/registreren.css">
-    <script src="/static/registreerLeerling.js" defer></script>
+    <link rel="stylesheet" href="/static/registrerenLeerling.css">
+    <script src="/static/registrerenLeerling.js" defer></script>
 </head>
 
 <body>
@@ -15,19 +15,13 @@
         </div>
         <form id="RegistratieForm" class="RegistratieForm">
             <div class="InputBlok">
-                <input class="Input" type="text" name="Voornaam" placeholder="Voornaam" required>
+                <input class="Input" type="text" name="Voornaam" id="VoornaamInput" placeholder="Voornaam" required>
             </div>
             <div class="InputBlok">
-                <input class="Input" type="text" name="Achternaam" placeholder="Achternaam" required>
+                <input class="Input" type="text" name="Achternaam" id="AchternaamInput" placeholder="Achternaam" required>
             </div>
             <div class="InputBlok">
-                <input class="Input" type="email" name="Email" placeholder="Email" required>
-            </div>
-            <div class="InputBlok">
-                <input class="Input" type="text" name="Klas" placeholder="Klas" required>
-            </div>
-            <div class="InputBlok">
-                <input class="Input" id="Leerlingnummer" type="text" name="Leerlingnummer" placeholder="Leerlingnummer" required>
+                <input class="Input" type="email" name="Email" id="EmailInput" placeholder="Email" required>
             </div>
             <div class="Foutmelding" id="Foutmelding"></div>
             <div class="SubmitBlok" id="SubmitBlok">
