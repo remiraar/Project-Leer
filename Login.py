@@ -1,4 +1,4 @@
-import csv
+import csv, random
 from hulpfuncties import (
     controle_wachtwoord_flask, 
     controleer_uniek, 
@@ -54,7 +54,12 @@ def MaakAccountLeerling():
                 Success=False,
                 Message="Je moet eerst je registratiegegevens invullen."
             ), 400
-
+        if str(VerificatieCode) != Geg["VerifCode"]:
+            return jsonify(
+                Success=False,
+                Message=f"Verificatie code is fout.{Geg["VerifCode"]}"
+            )
+        
         Voornaam = Geg["Voornaam"]
         Achternaam = Geg["Achternaam"]
         Email = Geg["Email"]
@@ -69,12 +74,9 @@ def MaakAccountLeerling():
             Writer = csv.writer(Bestand)
 
             Writer.writerow([
-                Leerlingnummer,
                 Voornaam,
                 Achternaam,
-                Klas,
                 Email,
-                Gebruikersnaam,
                 Wachtwoord
             ])
         session.pop("registratie", None)
@@ -90,31 +92,65 @@ def registrerenLeerling():
         Achternaam = request.form.get("Achternaam").strip()
         Email = request.form.get("Email").strip()
 
-        if f"{Voornaam.lower()}{Achternaam.lower()}" in Email and ".student@glorieuxsecundair.be" in Email:
+        if f"{Voornaam.lower()}{Achternaam.lower()}" not in Email.lower() or ".student@glorieuxsecundair.be" not in Email:
             print("FOUT: naam en email komen niet overeen.")
             return jsonify(
                 Success=False,
                 Message="Email komt niet overeen met naam."
             ), 400
 
+        VerifCode = random.randint(100000,999999)
+        print(VerifCode)
         session["registratie"] = {
             "Voornaam": Voornaam,
             "Achternaam": Achternaam,
-            "Email": Email
+            "Email": Email,
+            "VerifCode": str(VerifCode)
         }
 
-        return jsonify(Success=True)
+        return jsonify(Success=True, Code=VerifCode)
     return render_template("registrerenLeerling.html")
     
 
 @app.route('/loginLeerling', methods=["POST", "GET"])
 def loginLeerling():
     if request.method == "POST":
-        return controleer_login(
-            str(BASE_DIR / "Databas.csv"),
-            "leerling",
-            "/WebsiteLeerling"
-        )
+        Email = request.form.get("Email", "").strip()
+        Wachtwoord = request.form.get("Password", "").strip()
+        try:
+            with open(str(BASE_DIR / "Databas.csv"), "r", newline="", encoding="utf-8") as bestand:
+                lezer = csv.DictReader(bestand)
+    
+                if not lezer.fieldnames:
+                    return jsonify(
+                        Success=False,
+                        Message="Er is een probleem opgetreden."
+                    ), 500
+    
+                for rij in lezer:
+                    db_email = (rij.get("Email") or "").strip()
+                    db_wachtwoord = (rij.get("Wachtwoord") or "").strip()
+    
+                    if (db_email == Email and db_wachtwoord == Wachtwoord):
+                        #session["gebruiker"] = rij.get("Voornaam")
+                        session["rol"] = "leerling"
+    
+                        return jsonify(
+                            Success=True,
+                            Redirect= "/WebsiteLeerling",
+                            CurrentUser= rij.get("Voornaam")
+                        )
+                return jsonify(
+                    Success=False,
+                    Message="Email of wachtwoord fout."
+                ),401
+    
+        except Exception as e:
+            print(e)
+            return jsonify(
+                Success=False,
+                Message="Er is een probleem met de database."
+            ), 500
 
     return render_template("loginLeerling.html")
 

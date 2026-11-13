@@ -8,7 +8,7 @@ let NuWWInput2;
 
 RegistratieForm.addEventListener("submit", async function (event) {
     event.preventDefault();
-
+    Foutmelding.textContent = ""
     if (stap===1) {
         const Gegevens = new FormData(RegistratieForm);
 
@@ -19,6 +19,7 @@ RegistratieForm.addEventListener("submit", async function (event) {
 
         const Resultaat = await Antw.json();
         if (Resultaat.Success) {
+            console.log(Resultaat.Code)
             const NuWWInput1 = document.getElementById("VoornaamInput");
             NuWWInput1.name = "Wachtwoord";
             NuWWInput1.type = "password";
@@ -36,17 +37,18 @@ RegistratieForm.addEventListener("submit", async function (event) {
             NuLeerCode.type = "text";
             NuLeerCode.placeholder = "Unieke verificatiecode";
             NuLeerCode.value = ""
-
+            
+            if (NuWWInput1.value !== NuWWInput2.value) {
+                Foutmelding.textContent = "De wachtwoorden zijn niet hetzelfde.";
+                return;
+            }
             stap = 2;
         } else {
             Foutmelding.textContent = Resultaat.Message;
         }
     
     } else if (stap===2) {
-        if (NuWWInput1.value !== NuWWInput2.value) {
-            Foutmelding.textContent = "De wachtwoorden zijn niet hetzelfde.";
-            return;
-        }
+        
 
         const Geg = new FormData(RegistratieForm);
 
